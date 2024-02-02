@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AllAboutWeezer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240126031428_Identity")]
-    partial class Identity
+    [Migration("20240202054333_hopefully")]
+    partial class hopefully
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,11 +22,25 @@ namespace AllAboutWeezer.Migrations
                 .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
+            modelBuilder.Entity("AllAboutWeezer.Models.AppUser", b =>
                 {
-                    b.Property<int>("MessageId")
+                    b.Property<int>("AppUserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("AppUserId");
+
+                    b.ToTable("AppUser");
+                });
+
+            modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -43,15 +57,17 @@ namespace AllAboutWeezer.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("FromAppUserId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("MessageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("longtext");
@@ -92,7 +108,9 @@ namespace AllAboutWeezer.Migrations
                     b.Property<int>("YearDate")
                         .HasColumnType("int");
 
-                    b.HasKey("MessageId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromAppUserId");
 
                     b.ToTable("Message");
                 });
@@ -151,6 +169,17 @@ namespace AllAboutWeezer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SignUp");
+                });
+
+            modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
+                {
+                    b.HasOne("AllAboutWeezer.Models.AppUser", "From")
+                        .WithMany()
+                        .HasForeignKey("FromAppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("From");
                 });
 #pragma warning restore 612, 618
         }

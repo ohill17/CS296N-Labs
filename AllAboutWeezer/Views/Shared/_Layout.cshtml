@@ -3,16 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AllAboutWeezer</title>
+    <title>@ViewData["Title"] - All About Weezer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AllAboutWeezer.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @using Microsoft.AspNetCore.Identity
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AllAboutWeezer</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">All About Weezer</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,12 +31,35 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Quiz" asp-action="Index">Weezer Quiz</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary" asp-area="" asp-controller="Registration" asp-action="Index">Sign Up!</a>
-                        </li>
+                      
                     </ul>
-                       
-                    
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <!-- Signed-in user - show Log Out button and username -->
+                            <li class="nav-item">
+                                <form method="post" asp-action="Logout" asp-controller="Registration">
+                                    <input type="submit" value="Log Out" class="btn btn-outline-dark" />
+                                    <span class="text-dark">@User.Identity.Name</span>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- Anonymous user - show Sign Up link and Log In button -->
+                            <li class="nav-item">
+                                <a class="btn btn-primary mr-3" asp-action="Index" asp-controller="Registration">
+                                    Sign Up!
+                                </a>
+                                &nbsp
+                            </li>
+                            <li class="nav-item">
+                                <a asp-action="Login" asp-controller="Registration" class="btn btn-primary ml-auto">
+                                    Log In
+                                </a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
