@@ -6,10 +6,10 @@ namespace AllAboutWeezer.Controllers
 {
     public class RegistrationController : Controller
     {
-        private UserManager<SignUp> userManager;
-        private SignInManager<SignUp> signInManager;
+        private UserManager<AppUser> userManager;
+        private SignInManager<AppUser> signInManager;
 
-        public RegistrationController(UserManager<SignUp> userMngr, SignInManager<SignUp> signInMgr)
+        public RegistrationController(UserManager<AppUser> userMngr, SignInManager<AppUser> signInMgr)
         {
             userManager = userMngr;
             signInManager = signInMgr;
@@ -26,7 +26,7 @@ namespace AllAboutWeezer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new SignUp { UserName = model.Username, Name = model.Name };
+                var user = new AppUser { UserName = model.Username, Name = model.Name };
                 var result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

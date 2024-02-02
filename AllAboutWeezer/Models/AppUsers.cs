@@ -1,8 +1,9 @@
-﻿namespace AllAboutWeezer.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace AllAboutWeezer.Models
 {
-    public class AppUser
+    public class AppUser : IdentityUser
     {
-        public int AppUserId { get; set; }
         public string Name { get; set; }
     }
 }
