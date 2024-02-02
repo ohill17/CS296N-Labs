@@ -16,6 +16,6 @@ namespace AllAboutWeezer.Models
         public int YearDate { get; set; }
         public string StoryBody { get; set; }
        
-        public DateOnly Date { get; set; }
+        public DateOnly Date { get; set; } 
     }
 }
