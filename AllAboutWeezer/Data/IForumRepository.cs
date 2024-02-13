@@ -1,12 +1,13 @@
 ﻿using AllAboutWeezer.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AllAboutWeezer.Data
 {
     public interface IForumRepository
     {
-        public List<Message> GetMessages();
-        public Message GetMessageById(int id);
-        public int StoreMessage(Message message);
+        Task<List<Message>> GetMessagesAsync();
+        Task<Message> GetMessageByIdAsync(int id);
+        Task<int> StoreMessageAsync(Message message);
     }
 }
-

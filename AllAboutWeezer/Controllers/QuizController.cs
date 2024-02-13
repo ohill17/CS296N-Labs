@@ -8,21 +8,21 @@ namespace AllAboutWeezer.Controllers
         public Dictionary<int, String> Questions { get; set; }
         public Dictionary<int, String> Answers { get; set; }
 
-       
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            var model = LoadQuestions(new WeezyTests());
+            var model = await LoadQuestionsAsync(new WeezyTests());
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Index(string answer1, string answer2)
+        public async Task<IActionResult> Index(string answer1, string answer2)
         {
-            var model = LoadQuestions(new WeezyTests());
+            var model = await LoadQuestionsAsync(new WeezyTests());
             model.UserAnswers[1] = answer1;
             model.UserAnswers[2] = answer2;
-    
-            var checkedModel = checkQuizAnswers(model);
+
+            var checkedModel = await CheckQuizAnswersAsync(model);
             return View(checkedModel);
         }
 
@@ -35,14 +35,15 @@ namespace AllAboutWeezer.Controllers
             Questions[2] = "Rivers Cuomo still makes music";
             Answers[2] = "Yes";
         }
-        public WeezyTests LoadQuestions(WeezyTests model)
+
+        public async Task<WeezyTests> LoadQuestionsAsync(WeezyTests model)
         {
             model.Questions = Questions;
             model.Answers = Answers;
-      
+
             model.UserAnswers = new Dictionary<int, string>();
             model.Results = new Dictionary<int, bool>();
-     
+
             foreach (var question in Questions)
             {
                 int key = question.Key;
@@ -51,7 +52,8 @@ namespace AllAboutWeezer.Controllers
 
             return model;
         }
-        public WeezyTests checkQuizAnswers(WeezyTests model)
+
+        public async Task<WeezyTests> CheckQuizAnswersAsync(WeezyTests model)
         {
             foreach (var question in Questions)
             {
@@ -60,6 +62,5 @@ namespace AllAboutWeezer.Controllers
             }
             return model;
         }
-
     }
 }

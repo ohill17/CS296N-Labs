@@ -9,12 +9,12 @@
 
 <table class="table table-bordered table-striped table-sm">
     <thead>
-        <tr><th>Username</th><th>Roles</th><th></th><th></th><th></th></tr>
+        <tr><th>Username</th><th>Roles</th><th></th><th></th><th></th><th></th></tr>
     </thead>
     <tbody>
         @if (Model.Users.Count() == 0)
         {
-            <tr><td colspan="5">There are no user accounts.</td></tr>
+            <tr><td colspan="6">There are no user accounts.</td></tr>
         }
         else
         {
@@ -52,6 +52,17 @@
                             </button>
                         </form>
                     </td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form method="post" asp-action="AddToGF"
+                                  asp-route-id="@user.Id">
+                                <button type="submit" class="btn btn-primary">
+                                    Add To GF
+                                </button>
+                            </form>
+                        }
+                    </td>
                 </tr>
             }
         }
@@ -59,6 +70,15 @@
 </table>
 
 <h1 class="mb-2">Manage Roles</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <form method="post" asp-action="CreateGFRole">
+        <button type="submit" class="btn btn-primary">
+            Create GF Role
+        </button>
+    </form>
+}
 
 @if (Model.Roles.Count() == 0)
 {

@@ -2,26 +2,28 @@
 
 namespace AllAboutWeezer.Data
 {
-    public class FakeForumRepository : IForumRepository
+    namespace AllAboutWeezer.Data
     {
-        List<Message> messages = new List<Message>();
-
-
-        public Message GetMessageById(int id)
+        public class FakeForumRepository : IForumRepository
         {
-            throw new NotImplementedException();
-        }
+            private List<Message> _messages = new List<Message>();
 
-        public List<Message> GetMessages()
-        {
-            throw new NotImplementedException();
-        }
+            public Task<Message> GetMessageByIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
 
-        public int StoreMessage(Message message)
-        {
-            message.MessageId = messages.Count + 1; // Temp
-            messages.Add(message); 
-            return message.MessageId;
+            public Task<List<Message>> GetMessagesAsync()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<int> StoreMessageAsync(Message message)
+            {
+                message.MessageId = _messages.Count + 1; // Temp
+                _messages.Add(message);
+                return Task.FromResult(message.MessageId);
+            }
         }
     }
 }
