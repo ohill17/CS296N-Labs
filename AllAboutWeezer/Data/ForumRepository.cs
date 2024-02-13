@@ -1,32 +1,32 @@
 ﻿using AllAboutWeezer.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace AllAboutWeezer.Data
 {
     public class ForumRepository : IForumRepository
     {
-        AppDbContext context;
-        public ForumRepository(AppDbContext c)
+        private readonly AppDbContext _context;
+
+        public ForumRepository(AppDbContext context)
         {
-            context = c;
+            _context = context;
         }
 
-        public Message GetMessageById(int id)
+        public async Task<Message> GetMessageByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Message.FindAsync(id);
         }
 
-        public List<Message> GetMessages()
+        public async Task<List<Message>> GetMessagesAsync()
         {
-            return context.Message
-            .ToList();
+            return await _context.Message.ToListAsync();
         }
 
-        public int StoreMessage(Message message)
+        public async Task<int> StoreMessageAsync(Message message)
         {
-            context.Add(message);
-            // Returns the number of objects saved
-            return context.SaveChanges();
+            _context.Add(message);
+            return await _context.SaveChangesAsync();
         }
     }
 }

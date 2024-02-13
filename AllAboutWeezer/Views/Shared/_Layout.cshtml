@@ -33,11 +33,19 @@
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                             <li class="nav-item">
-                            <a class="nav-link" asp-controller="User" asp-action="Index"><span class="fas fa-cog"></span>&nbsp;Admin</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User" asp-action="Index"><span class="fas fa-cog"></span>&nbsp;Admin</a>
+                            </li>
                         }
-                      
+                        @if (User.IsInRole("GF"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User" asp-action="Valentines">
+                                    <span class="fas fa-heart"></span>&nbsp;Valentines
+                                </a>
+                            </li>
+                        }
+
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)

@@ -39,7 +39,10 @@ namespace AllAboutWeezer.Controllers
         {
             return View("../Account/Register");
         }
-
+        public IActionResult Valentines()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> Add(Registration model)
         {
@@ -114,6 +117,40 @@ namespace AllAboutWeezer.Controllers
         {
             var result = await roleManager.CreateAsync(new IdentityRole("Admin"));
             // TODO: Do something with the result or get rid of the bogus if
+            if (result.Succeeded) { }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateGFRole()
+        {
+            var result = await roleManager.CreateAsync(new IdentityRole("GF"));
+            // TODO: Do something with the result or get rid of the bogus if
+            if (result.Succeeded) { }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToGF(string id)
+        {
+            IdentityRole gfRole = await roleManager.FindByNameAsync("GF");
+            if (gfRole == null)
+            {
+                TempData["message"] = "GF role does not exist. "
+                    + "Click 'Create GF Role' button to create it.";
+            }
+            else
+            {
+                AppUser user = await userManager.FindByIdAsync(id);
+                await userManager.AddToRoleAsync(user, gfRole.Name);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromGF(string id)
+        {
+            AppUser user = await userManager.FindByIdAsync(id);
+            var result = await userManager.RemoveFromRoleAsync(user, "GF");
             if (result.Succeeded) { }
             return RedirectToAction("Index");
         }

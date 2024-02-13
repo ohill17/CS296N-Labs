@@ -3,27 +3,26 @@ using AllAboutWeezer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace AllAboutWeezer.Controllers
 {
     public class HomeController : Controller
     {
-        IForumRepository repository;
-        public HomeController(IForumRepository r)
+        private readonly IForumRepository _repository;
+
+        public HomeController(IForumRepository repository)
         {
-            repository = r;
+            _repository = repository;
         }
 
-        // TODO: Do something interesting with the messageId
-        public IActionResult StoriesPost(string messageId)
+        public async Task<IActionResult> StoriesPost(string messageId)
         {
-            // Get the last post out of the database
-            var messages = repository.GetMessages();
-            // .Where(m => m.MessageId == int.Parse(messageId))
-            // .FirstOrDefault();
-            // .Find(int.Parse(messageId));
+            var messages = await _repository.GetMessagesAsync();
+            // You might need to filter messages based on the messageId here
             return View(messages);
         }
+
         public IActionResult Index()
         {
             return View();
@@ -33,22 +32,22 @@ namespace AllAboutWeezer.Controllers
         {
             return View();
         }
+
         public IActionResult Stories()
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult Stories(Message model)
+        public async Task<IActionResult> Stories(Message model)
         {
             model.Date = DateOnly.FromDateTime(DateTime.Now);
 
-
-            // Save model to db
-            int result;
-            result = repository.StoreMessage(model);
+            int result = await _repository.StoreMessageAsync(model);
 
             return RedirectToAction("StoriesPost", new { model.MessageId });
         }
+
         public IActionResult Privacy()
         {
             return View();
