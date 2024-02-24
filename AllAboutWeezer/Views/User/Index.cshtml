@@ -3,29 +3,35 @@
     ViewData["Title"] = " | Manage Users";
 }
 
-<h1 class="mb-2">Manage Users</h1>
+<style>
+    .text-white {
+        color: white;
+    }
+</style>
 
-<h5 class="mt-2"><a asp-action="Add">Add a User</a></h5>
+<h1 class="mb-2 text-white">Manage Users</h1>
+
+<h5 class="mt-2 text-white"><a asp-action="Add" class="text-white">Add a User</a></h5>
 
 <table class="table table-bordered table-striped table-sm">
     <thead>
-        <tr><th>Username</th><th>Roles</th><th></th><th></th><th></th><th></th></tr>
+        <tr><th class="text-white">Username</th><th class="text-white">Roles</th><th></th><th></th><th></th><th></th></tr>
     </thead>
     <tbody>
         @if (Model.Users.Count() == 0)
         {
-            <tr><td colspan="6">There are no user accounts.</td></tr>
+            <tr><td colspan="6" class="text-white">There are no user accounts.</td></tr>
         }
         else
         {
             @foreach (AppUser user in Model.Users)
             {
                 <tr>
-                    <td>@user.UserName</td>
-                    <td>
+                    <td class="text-white">@user.UserName</td>
+                    <td class="text-white">
                         @foreach (string roleName in user.RoleNames)
                         {
-                            <div>@roleName</div>
+                            <div class="text-white">@roleName</div>
                         }
                     </td>
                     <td>
@@ -53,7 +59,7 @@
                         </form>
                     </td>
                     <td>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("GF"))
                         {
                             <form method="post" asp-action="AddToGF"
                                   asp-route-id="@user.Id">
@@ -69,7 +75,7 @@
     </tbody>
 </table>
 
-<h1 class="mb-2">Manage Roles</h1>
+<h1 class="mb-2 text-white">Manage Roles</h1>
 
 @if (User.IsInRole("Admin"))
 {
@@ -92,13 +98,13 @@ else
 {
     <table class="table table-bordered table-striped table-sm">
         <thead>
-            <tr><th>Role</th><th></th></tr>
+            <tr><th class="text-white">Role</th><th></th></tr>
         </thead>
         <tbody>
             @foreach (var role in Model.Roles)
             {
                 <tr>
-                    <td>@role.Name</td>
+                    <td class="text-white">@role.Name</td>
                     <td>
                         <form method="post" asp-action="DeleteRole"
                               asp-route-id="@role.Id">

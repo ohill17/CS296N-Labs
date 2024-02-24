@@ -1,32 +1,34 @@
 ﻿@model Message
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 <h1>Weezer/Rivers Cuomo Stories Page</h1>
-<p>
-    Fill in the boxes below and write a story about rivers to be posted in the stories section
-</p>
-<form method="Post">
+<p>Fill in the boxes below and write a story about Rivers to be posted in the stories section</p>
 
-    <label for="Title">Title:</label>
-    <input id="Title" name="Title"><br>
+<form method="Post" class="container">
 
-    <label for="Topic">Topic:</label>
-    <input id="Topic" name="Topic"><br>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title:</label>
+        <input id="Title" name="Title" class="form-control">
+    </div>
 
-    <label for="YearDate">Year of the Story:</label>
-    <input id="YearDate" name="YearDate"><br>
+    <div class="mb-3">
+        <label for="Topic" class="form-label">Topic:</label>
+        <input id="Topic" name="Topic" class="form-control">
+    </div>
 
-    <label for="StoryBody">Write your Story Here:</label>
-    <input id="StoryBody" name="StoryBody"><br>
+    <div class="mb-3">
+        <label for="YearDate" class="form-label">Year of the Story:</label>
+        <input id="YearDate" name="YearDate" class="form-control">
+    </div>
 
-    <label for="Username">Name of Poster:</label>
-    <input id="Username" name="Username"><br>
+    <div class="mb-3">
+        <label for="StoryBody" class="form-label">Write your Story Here:</label>
+        <textarea id="StoryBody" name="StoryBody" class="form-control"></textarea>
+    </div>
 
+    <div class="mb-3">
+        <label for="Username" class="form-label">Name of Poster:</label>
+        <input id="Username" name="Username" class="form-control">
+    </div>
 
-    <input type="submit"><br />
-
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>

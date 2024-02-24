@@ -1,3 +1,4 @@
+using AllAboutWeezer;
 using AllAboutWeezer.Data;
 using AllAboutWeezer.Models;
 using Microsoft.AspNetCore.Identity;
@@ -50,5 +51,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    SeedData.Seed(dbContext, scope.ServiceProvider);
+}
 
 app.Run();
