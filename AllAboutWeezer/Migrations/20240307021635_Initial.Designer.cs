@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AllAboutWeezer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240224200355_SeedDataLocal")]
-    partial class SeedDataLocal
+    [Migration("20240307021635_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,46 @@ namespace AllAboutWeezer.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<string>("FromId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int?>("OriginalMessageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StoryBody")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("YearDate")
+                        .HasColumnType("int");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("OriginalMessageId");
+
+                    b.ToTable("Message");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -235,36 +275,17 @@ namespace AllAboutWeezer.Migrations
 
             modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.HasOne("AllAboutWeezer.Models.AppUser", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.HasOne("AllAboutWeezer.Models.Message", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("OriginalMessageId");
 
-                    b.Property<string>("FromId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StoryBody")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Topic")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("YearDate")
-                        .HasColumnType("int");
-
-                    b.HasIndex("FromId");
-
-                    b.HasDiscriminator().HasValue("Message");
+                    b.Navigation("From");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -320,13 +341,7 @@ namespace AllAboutWeezer.Migrations
 
             modelBuilder.Entity("AllAboutWeezer.Models.Message", b =>
                 {
-                    b.HasOne("AllAboutWeezer.Models.AppUser", "From")
-                        .WithMany()
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("From");
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

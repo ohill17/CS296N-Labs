@@ -1,0 +1,27 @@
+﻿@model Message
+@{
+    ViewData["Title"] = "Reply";
+}
+
+<h1>Reply</h1>
+
+<form asp-action="Reply">
+    <div class="form-group" style="display: none;">
+        <label asp-for="Title" class="control-label">Title</label>
+        <input asp-for="Title" class="form-control" value="Enter a title for your reply">
+    </div>
+    <div class="form-group" style="display: none;">
+        <label asp-for="Topic" class="control-label">Topic</label>
+        <input asp-for="Topic" class="form-control" value="Enter the topic of your reply">
+    </div>
+    <div class="form-group" style="display: none;">
+        <label asp-for="YearDate" class="control-label">Year Date</label>
+        <input asp-for="YearDate" class="form-control" value="2020">
+    </div>
+    <div class="form-group">
+        <label asp-for="StoryBody" class="control-label">Story</label>
+        <textarea asp-for="StoryBody" class="form-control" placeholder="Enter your reply"></textarea>
+        <input hidden name="OriginalMessageId" value="@Model.OriginalMessageId" />
+    </div>
+    <button type="submit" class="btn btn-primary">Reply</button>
+</form>

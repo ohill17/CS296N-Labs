@@ -1,26 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model List<Message>
-@{
-}
-<h1>
-    Stories about Rivers Cuomo and his band Weezer.
-</h1>
-
-@if (@Model != null)
+﻿@if (Model != null)
 {
-   
+    <h1>Stories about Rivers Cuomo and his band Weezer.</h1>
+
     @foreach (var message in Model)
     {
-        <p>
-           
-            Title: @message.Title
-            Topic: @message.Topic
-            Year the Story Takes Place: @message.YearDate
-            Story: @message.StoryBody <br>
-            Date: @message.Date
-        </p>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h2 class="card-title">Title: @message.Title</h2>
+                <p class="card-text">From: @(message.From != null ? message.From.Name : "Unknown")</p>
+                <p class="card-text">Topic: @message.Topic</p>
+                <p class="card-text">Year the Story Takes Place: @message.YearDate</p>
+                <p class="card-text">Story: @message.StoryBody</p>
+                <p class="card-text">Date: @message.Date</p>
+                <a href="/Home/Reply?OriginalMessageId=@message.MessageId" class="btn btn-primary">Reply</a>
+            </div>
+        </div>
+
+        @if (message.Replies != null && message.Replies.Count > 0)
+        {
+            <div class="ml-3 mt-3">
+                <h4>Replies</h4>
+                @foreach (Message reply in message.Replies)
+                {
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <p class="card-text">Message: @reply.StoryBody</p>
+                            <p class="card-text">Date: @reply.Date</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
     }
 }
-
