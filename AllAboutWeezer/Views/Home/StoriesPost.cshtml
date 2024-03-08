@@ -4,32 +4,42 @@
 
     @foreach (var message in Model)
     {
-        <div class="card mt-3">
-            <div class="card-body">
-                <h2 class="card-title">Title: @message.Title</h2>
-                <p class="card-text">From: @(message.From != null ? message.From.Name : "Unknown")</p>
-                <p class="card-text">Topic: @message.Topic</p>
-                <p class="card-text">Year the Story Takes Place: @message.YearDate</p>
-                <p class="card-text">Story: @message.StoryBody</p>
-                <p class="card-text">Date: @message.Date</p>
-                <a href="/Home/Reply?OriginalMessageId=@message.MessageId" class="btn btn-primary">Reply</a>
-            </div>
-        </div>
-
-        @if (message.Replies != null && message.Replies.Count > 0)
+        @if (message.OriginalMessageId == null)
         {
-            <div class="ml-3 mt-3">
-                <h4>Replies</h4>
-                @foreach (Message reply in message.Replies)
-                {
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <p class="card-text">Message: @reply.StoryBody</p>
-                            <p class="card-text">Date: @reply.Date</p>
-                        </div>
-                    </div>
-                }
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h2 class="card-title">Title: @message.Title</h2>
+                    @*
+                        TODO: Figure how the heck this works
+ 
+                    *@
+                    <p class="card-text">From: @(message.From != null ? message.From.Name ?? "Unknown" : "Unknown")</p>
+                    <p class="card-text">Topic: @message.Topic</p>
+                    <p class="card-text">Year the Story Takes Place: @message.YearDate</p>
+                    <p class="card-text">Story: @message.StoryBody</p>
+                    <p class="card-text">Date: @message.Date</p>
+                    <a href="/Home/Reply?OriginalMessageId=@message.MessageId" class="btn btn-primary">Comment</a>
+                    <a href="/Home/DeleteForumPost?messageId=@message.MessageId">Delete Message</a>
+                </div>
             </div>
+
+            @if (message.Replies != null && message.Replies.Count > 0)
+            {
+                <div class="ml-3 mt-3">
+                    <h4>Comments</h4>
+                    @foreach (Message reply in message.Replies)
+                    {
+                        <div class="card mt-3 ml-3">
+                            <!-- Add left margin here -->
+                            <div class="card-body">
+                                <p class="card-text">Date: @reply.Date</p>
+                                <p class="card-text">Message: @reply.StoryBody</p>
+                                <a href="/Home/DeleteForumPost?messageId=@message.MessageId">Delete Message</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
         }
     }
 }

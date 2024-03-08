@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AllAboutWeezer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240307021635_Initial")]
-    partial class Initial
+    [Migration("20240308060144_Delete")]
+    partial class Delete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

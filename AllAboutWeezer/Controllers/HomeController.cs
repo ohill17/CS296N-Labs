@@ -20,11 +20,19 @@ namespace AllAboutWeezer.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> StoriesPost(string messageId)
+        public async Task<IActionResult> StoriesPost(string messageId, Message model)
         {
+
+            model.From = await _userManager.GetUserAsync(User);
             var messages = await _repository.GetMessagesAsync();
             // You might need to filter messages based on the messageId here
             return View(messages);
+        }
+        public IActionResult DeleteForumPost(int messageId)
+        {
+            // TODO: Do something like redirect if the delete fails
+            _repository.DeleteMessage(messageId);
+            return RedirectToAction("StoriesPost");
         }
 
         public IActionResult Index()
@@ -41,25 +49,24 @@ namespace AllAboutWeezer.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Stories(Message model)
         {
             model.Date = DateOnly.FromDateTime(DateTime.Now);
 
-            if (_userManager != null) // Don't get a user when doing unit tests
+            if (_userManager != null)
             {
-                // Get the sender
-                model.From = await _userManager.GetUserAsync(User);
+                // Get the sender if not already set
+                if (model.From == null)
+                {
+                    model.From = await _userManager.GetUserAsync(User);
+                }
             }
 
             if (model.From != null) // Ensure the sender is valid
             {
-                
-                    int result = await _repository.StoreMessageAsync(model);
-                    return RedirectToAction("StoriesPost", new { messageId = model.MessageId });
-                
-               
+                int result = await _repository.StoreMessageAsync(model);
+                return RedirectToAction("StoriesPost", new { messageId = model.MessageId });
             }
             else
             {
@@ -80,28 +87,23 @@ namespace AllAboutWeezer.Controllers
         public async Task<IActionResult> Reply(Message model)
         {
             model.Date = DateOnly.FromDateTime(DateTime.Now);
-            if (_userManager != null) // Don't get a user when doing unit tests
+            if (_userManager != null)
             {
-                // Get the sender
-                model.From = _userManager.GetUserAsync(User).Result;
+              
+                    model.From = await _userManager.GetUserAsync(User);
+                
             }
 
-            // Get the message being replied to (guaranteed to be not null by design)
             Message originalMessage = await _repository.GetMessageByIdAsync(model.OriginalMessageId.Value);
 
-            // Save the message
+          //  model.To = originalMessage.From;
+
             await _repository.StoreMessageAsync(model);
 
-            // Add the reply to the original message
-            if (originalMessage.Replies == null)
-            {
-                originalMessage.Replies = new List<Message>(); // Ensure the Replies collection is initialized
-            }
             originalMessage.Replies.Add(model);
-           // _repository.UpdateMessage(originalMessage);
+          //  _repository.UpdateMessage(originalMessage);
 
-            //TODO: Do something interesting/useful with the MessageId or don't send it. It's not currently used.
-            return RedirectToAction("StoriesPost", new { messageId = model.MessageId }); // Redirect to StoriesPost with messageId parameter
+            return RedirectToAction("StoriesPost", new { model.MessageId });
         }
 
         public IActionResult Privacy()

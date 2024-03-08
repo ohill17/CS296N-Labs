@@ -23,5 +23,6 @@
         <textarea asp-for="StoryBody" class="form-control" placeholder="Enter your reply"></textarea>
         <input hidden name="OriginalMessageId" value="@Model.OriginalMessageId" />
     </div>
+    <input asp-for="MessageId" type="hidden" />
     <button type="submit" class="btn btn-primary">Reply</button>
 </form>

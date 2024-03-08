@@ -7,7 +7,10 @@ namespace AllAboutWeezer.Data
         public class FakeForumRepository : IForumRepository
         {
             private List<Message> _messages = new List<Message>();
-
+            public int DeleteMessage(int messageId)
+            {
+                throw new NotImplementedException();
+            }
             public Task<Message> GetMessageByIdAsync(int id)
             {
                 throw new NotImplementedException();

@@ -9,5 +9,6 @@ namespace AllAboutWeezer.Data
         Task<List<Message>> GetMessagesAsync();
         Task<Message> GetMessageByIdAsync(int id);
         Task<int> StoreMessageAsync(Message message);
+        public int DeleteMessage(int messageId);
     }
 }

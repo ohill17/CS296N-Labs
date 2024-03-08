@@ -28,5 +28,19 @@ namespace AllAboutWeezer.Data
             _context.Add(message);
             return await _context.SaveChangesAsync();
         }
+        public int DeleteMessage(int messageId)
+        {
+            Message message = GetMessageByIdAsync(messageId).Result;
+            // If the message has replies, remove them first to avoid a FK constraint violation
+            if (message.Replies.Count > 0)
+            {
+                foreach (var reply in message.Replies)
+                {
+                    _context.Message.Remove(reply);
+                }
+            }
+            _context.Message.Remove(message);
+            return _context.SaveChanges();
+        }
     }
 }
