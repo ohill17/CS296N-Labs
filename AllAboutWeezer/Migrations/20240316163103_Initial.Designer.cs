@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AllAboutWeezer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240308060144_Delete")]
-    partial class Delete
+    [Migration("20240316163103_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,6 @@ namespace AllAboutWeezer.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("FromId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<int?>("OriginalMessageId")
@@ -40,15 +39,18 @@ namespace AllAboutWeezer.Migrations
 
                     b.Property<string>("StoryBody")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(528)
+                        .HasColumnType("varchar(528)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(48)
+                        .HasColumnType("varchar(48)");
 
                     b.Property<string>("Topic")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(48)
+                        .HasColumnType("varchar(48)");
 
                     b.Property<int>("YearDate")
                         .HasColumnType("int");
@@ -277,9 +279,7 @@ namespace AllAboutWeezer.Migrations
                 {
                     b.HasOne("AllAboutWeezer.Models.AppUser", "From")
                         .WithMany()
-                        .HasForeignKey("FromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FromId");
 
                     b.HasOne("AllAboutWeezer.Models.Message", null)
                         .WithMany("Replies")

@@ -11,9 +11,9 @@
                     <h2 class="card-title">Title: @message.Title</h2>
                     @*
                         TODO: Figure how the heck this works
- 
+  <p class="card-text">From: @(message.From != null ? message.From.Name ?? "Unknown" : "Unknown")</p>
                     *@
-                    <p class="card-text">From: @(message.From != null ? message.From.Name ?? "Unknown" : "Unknown")</p>
+                   
                     <p class="card-text">Topic: @message.Topic</p>
                     <p class="card-text">Year the Story Takes Place: @message.YearDate</p>
                     <p class="card-text">Story: @message.StoryBody</p>
@@ -32,7 +32,7 @@
                         <div class="card mt-3 ml-3">
                             <!-- Add left margin here -->
                             <div class="card-body">
-                                <p class="card-text">Date: @reply.Date</p>
+                                <p class="card-text">Date: @reply.YearDate</p>
                                 <p class="card-text">Message: @reply.StoryBody</p>
                                 <a href="/Home/DeleteForumPost?messageId=@message.MessageId">Delete Message</a>
                             </div>

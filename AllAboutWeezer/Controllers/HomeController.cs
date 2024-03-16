@@ -19,7 +19,7 @@ namespace AllAboutWeezer.Controllers
             _repository = repository;
             _userManager = userManager;
         }
-
+        
         public async Task<IActionResult> StoriesPost(string messageId, Message model)
         {
 
@@ -45,6 +45,8 @@ namespace AllAboutWeezer.Controllers
             return View();
         }
 
+
+        [Authorize]
         public IActionResult Stories()
         {
             return View();
@@ -52,6 +54,11 @@ namespace AllAboutWeezer.Controllers
         [HttpPost]
         public async Task<IActionResult> Stories(Message model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model); // Return the view with validation errors if model state is not valid
+            }
+
             model.Date = DateOnly.FromDateTime(DateTime.Now);
 
             if (_userManager != null)
@@ -73,48 +80,33 @@ namespace AllAboutWeezer.Controllers
                 ModelState.AddModelError("", "Sender not authenticated or not found");
                 return View(model);
             }
-        }
-        [Authorize]
-        public IActionResult Reply(int? originalMessageId)
-        {
-            Message message = new Message();
-            message.OriginalMessageId = originalMessageId;
-            return View(message);
+            
         }
 
         [HttpPost]
+
         [Authorize]
         public async Task<IActionResult> Reply(Message model)
         {
             model.Date = DateOnly.FromDateTime(DateTime.Now);
             if (_userManager != null)
             {
-              
-                    model.From = await _userManager.GetUserAsync(User);
-                
+
+                model.From = await _userManager.GetUserAsync(User);
+
             }
 
             Message originalMessage = await _repository.GetMessageByIdAsync(model.OriginalMessageId.Value);
 
-          //  model.To = originalMessage.From;
+            //  model.To = originalMessage.From;
 
             await _repository.StoreMessageAsync(model);
 
             originalMessage.Replies.Add(model);
-          //  _repository.UpdateMessage(originalMessage);
+            //  _repository.UpdateMessage(originalMessage);
 
             return RedirectToAction("StoriesPost", new { model.MessageId });
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

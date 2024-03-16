@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AllAboutWeezer.Controllers
 {
-  //  [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private UserManager<AppUser> userManager;
@@ -37,7 +37,7 @@ namespace AllAboutWeezer.Controllers
 
         public IActionResult Add()
         {
-            return View("../Account/Register");
+            return View("../User/Add");
         }
         public IActionResult Valentines()
         {
@@ -63,7 +63,7 @@ namespace AllAboutWeezer.Controllers
                     }
                 }
             }
-            return View("../Account/Register", model);
+            return View("../User/Add", model);
         }
 
         [HttpPost]

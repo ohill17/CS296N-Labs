@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AllAboutWeezer.Migrations
 {
     /// <inheritdoc />
-    public partial class Delete : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -206,16 +206,16 @@ namespace AllAboutWeezer.Migrations
                 {
                     MessageId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FromId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    FromId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Title = table.Column<string>(type: "longtext", nullable: false)
+                    Title = table.Column<string>(type: "varchar(48)", maxLength: 48, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Topic = table.Column<string>(type: "longtext", nullable: false)
+                    Topic = table.Column<string>(type: "varchar(48)", maxLength: 48, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     YearDate = table.Column<int>(type: "int", nullable: false),
-                    StoryBody = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    StoryBody = table.Column<string>(type: "varchar(528)", maxLength: 528, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     OriginalMessageId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -225,8 +225,7 @@ namespace AllAboutWeezer.Migrations
                         name: "FK_Message_AspNetUsers_FromId",
                         column: x => x.FromId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Message_Message_OriginalMessageId",
                         column: x => x.OriginalMessageId,

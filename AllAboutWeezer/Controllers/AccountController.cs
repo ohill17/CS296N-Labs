@@ -4,12 +4,12 @@ using AllAboutWeezer.Models;
 
 namespace AllAboutWeezer.Controllers
 {
-    public class RegistrationController : Controller
+    public class AccountController : Controller
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
 
-        public RegistrationController(UserManager<AppUser> userMngr, SignInManager<AppUser> signInMgr)
+        public AccountController(UserManager<AppUser> userMngr, SignInManager<AppUser> signInMgr)
         {
             userManager = userMngr;
             signInManager = signInMgr;

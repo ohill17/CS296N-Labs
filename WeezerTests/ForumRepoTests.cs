@@ -17,7 +17,7 @@ namespace WeezerTests
             {
             Title = "Intresting Title",
             Topic = "Intresting Topic",
-            YearDate = 2020,
+            //Date = 2020,
             StoryBody = "Cool Intresting Story",
          
             };
